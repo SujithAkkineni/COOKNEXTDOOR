@@ -7,9 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSnackBarModule, MatSnackBar } from '@angular/material/snack-bar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 import { MenuService, MenuItem } from '../../services/menu.service';
 import { CartService } from '../../services/cart';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -21,7 +25,10 @@ import { CartService } from '../../services/cart';
     MatButtonModule,
     MatIconModule,
     MatBadgeModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule
   ],
   templateUrl: './menu.html',
   styleUrls: ['./menu.scss']
@@ -31,6 +38,12 @@ export class MenuComponent implements OnInit {
   categories: string[] = [];
   restaurantId: string = '';
   restaurantName: string = '';
+  reviews: any[] = [];
+  isLoggedIn = false;
+  newReview = {
+    rating: 0,
+    comment: ''
+  };
 
   constructor(
     private menuService: MenuService,
@@ -61,6 +74,23 @@ export class MenuComponent implements OnInit {
 
   getItemsByCategory(category: string): MenuItem[] {
     return this.menuItems.filter(item => item.category === category);
+  }
+
+  setRating(rating: number) {
+    this.newReview.rating = rating;
+  }
+
+  submitReview() {
+    // Here you would call your review service to submit the review
+    console.log('Submitting review:', this.newReview);
+    this.reviews.push({
+      ...this.newReview,
+      date: new Date()
+    });
+    this.newReview = {
+      rating: 0,
+      comment: ''
+    };
   }
 
   addToCart(item: MenuItem) {

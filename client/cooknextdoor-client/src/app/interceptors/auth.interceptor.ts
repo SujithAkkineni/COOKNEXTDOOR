@@ -8,7 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthService } from '../services/auth';
+import { AuthService } from '@app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()

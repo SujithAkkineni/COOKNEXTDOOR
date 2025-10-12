@@ -11,10 +11,15 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:4200',
+  origin: process.env.CLIENT_URL || 'http://localhost:4200',
   credentials: true
 }));
 app.use(express.json());
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('public'));
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
