@@ -1,0 +1,98 @@
+<div class="profile-container">
+  <mat-tab-group>
+    <mat-tab label="Profile">
+      <mat-card class="profile-card">
+        <mat-card-header>
+          <mat-card-title>Profile Information</mat-card-title>
+          <button mat-button color="primary" (click)="toggleEditMode()">
+            {{ editMode ? 'Cancel' : 'Edit Profile' }}
+          </button>
+        </mat-card-header>
+
+        <mat-card-content>
+          <form *ngIf="user" (ngSubmit)="onSaveProfile()" #profileForm="ngForm">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput [(ngModel)]="user.name" name="name" required [readonly]="!editMode">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput [(ngModel)]="user.email" name="email" required [readonly]="true">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input matInput [(ngModel)]="user.phone" name="phone" [readonly]="!editMode">
+            </mat-form-field>
+
+            <div class="address-fields" *ngIf="user.address">
+              <h3>Delivery Address</h3>
+              <mat-form-field appearance="outline">
+                <mat-label>Street</mat-label>
+                <input matInput [(ngModel)]="user.address.street" name="street" [readonly]="!editMode">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <input matInput [(ngModel)]="user.address.city" name="city" [readonly]="!editMode">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>State</mat-label>
+                <input matInput [(ngModel)]="user.address.state" name="state" [readonly]="!editMode">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>ZIP Code</mat-label>
+                <input matInput [(ngModel)]="user.address.zipCode" name="zipCode" [readonly]="!editMode">
+              </mat-form-field>
+            </div>
+
+            <button 
+              *ngIf="editMode" 
+              mat-raised-button 
+              color="primary" 
+              type="submit"
+              [disabled]="loading || !profileForm.form.valid">
+              Save Changes
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Order History">
+      <div class="orders-list">
+        <mat-card *ngFor="let order of orders" class="order-card">
+          <mat-card-header>
+            <mat-card-title>Order #{{ order.id }}</mat-card-title>
+            <mat-card-subtitle>{{ order.date | date:'medium' }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="order-items">
+              <div *ngFor="let item of order.items" class="order-item">
+                <span>{{ item.quantity }}x {{ item.name }}</span>
+                <span>${{ item.price * item.quantity }}</span>
+              </div>
+            </div>
+
+            <div class="order-total">
+              <span>Total:</span>
+              <span>${{ order.total }}</span>
+            </div>
+
+            <div class="order-status">
+              Status: {{ order.status }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <div *ngIf="orders.length === 0" class="no-orders">
+          <p>No orders yet</p>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

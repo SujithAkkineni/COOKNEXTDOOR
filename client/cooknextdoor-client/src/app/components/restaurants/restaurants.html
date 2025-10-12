@@ -1,0 +1,43 @@
+<div class="search-container">
+  <mat-form-field appearance="outline" class="search-field">
+    <mat-label>Search Restaurants</mat-label>
+    <input matInput [(ngModel)]="searchQuery" (input)="onSearch()" placeholder="Search by name, cuisine...">
+    <button mat-icon-button matSuffix (click)="searchQuery = ''; onSearch()">
+      <mat-icon>{{ searchQuery ? 'clear' : 'search' }}</mat-icon>
+    </button>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="filter-field">
+    <mat-label>Filter by Cuisine</mat-label>
+    <mat-select [(ngModel)]="selectedCuisine" (selectionChange)="onSearch()">
+      <mat-option value="">All Cuisines</mat-option>
+      <mat-option *ngFor="let cuisine of cuisines" [value]="cuisine">
+        {{cuisine}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<div class="grid-container">
+  <mat-card *ngFor="let restaurant of filteredRestaurants" class="restaurant-card">
+    <img mat-card-image [src]="restaurant.imageUrl" [alt]="restaurant.name">
+    <mat-card-header>
+      <mat-card-title>{{ restaurant.name }}</mat-card-title>
+      <mat-card-subtitle>{{ restaurant.cuisine }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ restaurant.description }}</p>
+      <div class="rating">
+        <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                  [class.filled]="star <= restaurant.rating">
+          star
+        </mat-icon>
+        <span>{{ restaurant.rating }}/5</span>
+      </div>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary" [routerLink]="['/restaurants', restaurant.id, 'menu']">VIEW MENU</button>
+      <button mat-button color="accent">ORDER NOW</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

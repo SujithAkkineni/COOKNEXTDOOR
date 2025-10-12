@@ -1,0 +1,107 @@
+<div class="menu-container">
+  <header class="restaurant-header">
+    <h2>{{ restaurantName }}</h2>
+    <button mat-raised-button color="primary" routerLink="/cart">
+      <mat-icon>shopping_cart</mat-icon>
+      View Cart
+    </button>
+  </header>
+
+  <mat-tab-group>
+    <mat-tab *ngFor="let category of categories" [label]="category">
+      <div class="menu-grid">
+        <mat-card *ngFor="let item of getItemsByCategory(category)" class="menu-item">
+          <img mat-card-image [src]="item.imageUrl" [alt]="item.name">
+          
+          <mat-card-header>
+            <mat-card-title>{{ item.name }}</mat-card-title>
+            <mat-card-subtitle>${{ item.price.toFixed(2) }}</mat-card-subtitle>
+          </mat-card-header>
+          
+          <mat-card-content>
+            <p>{{ item.description }}</p>
+          </mat-card-content>
+          
+          <mat-card-actions>
+            <button 
+              mat-raised-button 
+              color="primary" 
+              (click)="addToCart(item)"
+              [disabled]="!item.available">
+              <mat-icon>add_shopping_cart</mat-icon>
+              Add to Cart
+            </button>
+          </mat-card-actions>
+
+          <div *ngIf="!item.available" class="unavailable-badge">
+            Currently Unavailable
+          </div>
+        </mat-card>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+  <mat-tab label="Reviews">
+    <div class="reviews-container">
+      <div class="add-review" *ngIf="isLoggedIn">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Write a Review</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div class="rating-input">
+              <mat-icon 
+                *ngFor="let star of [1,2,3,4,5]" 
+                (click)="setRating(star)"
+                [class.filled]="star <= newReview.rating">
+                star
+              </mat-icon>
+            </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Your Review</mat-label>
+              <textarea 
+                matInput 
+                [(ngModel)]="newReview.comment" 
+                rows="4"
+                placeholder="Share your experience...">
+              </textarea>
+            </mat-form-field>
+          </mat-card-content>
+          <mat-card-actions>
+            <button 
+              mat-raised-button 
+              color="primary"
+              (click)="submitReview()"
+              [disabled]="!newReview.rating || !newReview.comment">
+              Submit Review
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+
+      <div class="reviews-list">
+        <mat-card *ngFor="let review of reviews" class="review-card">
+          <mat-card-header>
+            <mat-card-title>{{ review.userName }}</mat-card-title>
+            <mat-card-subtitle>
+              <div class="rating">
+                <mat-icon *ngFor="let star of [1,2,3,4,5]" 
+                         [class.filled]="star <= review.rating">
+                  star
+                </mat-icon>
+              </div>
+              {{ review.date | date:'medium' }}
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ review.comment }}</p>
+          </mat-card-content>
+        </mat-card>
+
+        <div *ngIf="reviews.length === 0" class="no-reviews">
+          <p>No reviews yet. Be the first to review!</p>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+</div>

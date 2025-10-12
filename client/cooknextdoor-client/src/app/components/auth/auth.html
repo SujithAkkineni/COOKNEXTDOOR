@@ -1,0 +1,37 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isLoginMode ? 'Login' : 'Register' }}</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form (ngSubmit)="onSubmit()" #authForm="ngForm">
+        <ng-container *ngIf="!isLoginMode">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput [(ngModel)]="user.name" name="name" required>
+          </mat-form-field>
+        </ng-container>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="user.email" name="email" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" [(ngModel)]="user.password" name="password" required>
+        </mat-form-field>
+
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit">
+            {{ isLoginMode ? 'Login' : 'Register' }}
+          </button>
+          <button mat-button type="button" (click)="isLoginMode = !isLoginMode">
+            Switch to {{ isLoginMode ? 'Register' : 'Login' }}
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
