@@ -136,19 +136,56 @@ The application will be available at:
 
 ## 🚀 Deployment
 
-### Backend Deployment
-The backend can be deployed to:
-- **Heroku**
-- **DigitalOcean**
-- **AWS**
-- **Railway**
+### Render Deployment (Recommended)
 
-### Frontend Deployment
-The frontend can be deployed to:
-- **Netlify**
-- **Vercel**
-- **Firebase Hosting**
-- **GitHub Pages**
+This application is optimized for deployment on [Render](https://render.com).
+
+#### Quick Deploy to Render:
+
+1. **Connect your GitHub repository** to Render
+2. **Create a new Web Service** with these settings:
+   - **Runtime**: `Node.js`
+   - **Build Command**: `npm run build`
+   - **Start Command**: `npm start`
+   - **Auto-Deploy**: `Yes`
+
+3. **Environment Variables** (add these in Render dashboard):
+   ```env
+   NODE_ENV=production
+   MONGODB_URI=your_mongodb_atlas_connection_string
+   JWT_SECRET=your_generated_secret
+   ```
+
+4. **Deploy**: Click "Create Web Service" and Render will automatically:
+   - Install dependencies
+   - Build the Angular frontend
+   - Start the backend server
+   - Serve the full-stack application
+
+#### Manual Deployment Steps:
+
+1. **Set up MongoDB Atlas** (free):
+   - Go to [mongodb.com/atlas](https://mongodb.com/atlas)
+   - Create a free cluster and database user
+   - Get your connection string
+
+2. **Deploy to Render**:
+   - Connect your GitHub repository
+   - The `render.yaml` file is already configured
+   - Add environment variables in Render dashboard
+   - Deploy automatically on git push
+
+### Alternative Deployment Options
+
+#### Backend Deployment
+- **Railway**: Connect GitHub repo and deploy
+- **Heroku**: Add `Procfile` and deploy
+- **DigitalOcean App Platform**: Similar to Render
+
+#### Frontend Deployment (if separate)
+- **Netlify**: Drag and drop the `frontend/dist` folder
+- **Vercel**: Connect GitHub and auto-deploy
+- **Firebase Hosting**: Build and deploy frontend only
 
 ## 📝 Development Notes
 
